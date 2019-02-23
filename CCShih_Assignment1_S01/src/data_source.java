@@ -1,5 +1,4 @@
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -279,43 +278,39 @@ public class data_source {
         }
 
         //---------------------------------------------------------交叉比對 <keyword ,speech> and <key,type>
+        //--------temp<keyword,type,speech>
 
 
-        Table<String, String, String> temp = HashBasedTable.create();
+        HashBasedTable<String, String, String> temp = HashBasedTable.create();
+        String input_Example = "PLACEHOLDER";
 
 
-        int i = 0;
-        while (true) {
-            for (HashMap.Entry<String, List> entry : speechmap.entrySet()) {
-                System.out.println(entry.getValue().get(i));
+        for (String key : keymap.keySet()) {
+            int index_key = 0;
 
-                if (keymap.values().iterator().next().get(i).equals(nounspt.get(i)) && entry.getValue().listIterator().next().toString().equals(nounspt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
+            while (keymap.get(key).listIterator(index_key).hasNext()){
+                int index_sp = 0;
+                while (speechmap.get(key).listIterator(index_sp).hasNext()) {
+
+
+                    //System.out.println(keymap.get(key).listIterator(index_key).next()+key);
+                    //System.out.println(key+keymap.get(key).listIterator(index_key).next());
+                    //System.out.println(speechmap.get(key).size());
+                    if(speechmap.get(key).listIterator(index_sp).next()==keymap.get(key).listIterator(index_key).next()) {
+                        System.out.println(speechmap.get(key).get(index_sp)+key);
+                        System.out.println(index_sp);
+                    }
+                    index_sp++;
                 }
-                if (keymap.values().iterator().next().get(i) == adjspt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(adjspt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
-                if (keymap.values().iterator().next().get(i) == advspt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(advspt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
-                if (keymap.values().iterator().next().get(i) == conspt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(conspt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
-                if (keymap.values().iterator().next().get(i) == interspt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(interspt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
-                if (keymap.values().iterator().next().get(i) == prespt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(prespt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
-                if (keymap.values().iterator().next().get(i) == prospt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(prospt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
-                if (keymap.values().iterator().next().get(i) == verbspt.get(i) && 0 == entry.getValue().listIterator().next().toString().compareTo(verbspt.toString())) {
-                    temp.put(entry.getKey(), speechtypes.get(i), entry.getValue().listIterator().next().toString());
-                }
+                System.out.println(index_key+"index_key");
+                index_key++;
             }
-            System.out.println(temp.values());
+            System.out.println(key);
         }
+
+
+
+
 
     }
 }
