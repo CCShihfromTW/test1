@@ -1,8 +1,7 @@
 import com.google.common.collect.HashBasedTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 enum key {
     ARROW,
@@ -94,7 +93,7 @@ public class data_source {
         List<String> verbspt = new ArrayList<>();
         //-----------------------------------------------
 
-        HashMap<String, List> keymap = new HashMap<>();         //<List keys , List type>
+        Map<String, List> keymap = new HashMap<>();         //<List keys , List type>
         HashMap<String, List> speechmap = new HashMap<>();       //<List key,List speech>
         //-----------------------------------------------
         for (speech spe : speech.values()) {                     //ENUM speech to List speeches
@@ -172,144 +171,192 @@ public class data_source {
             }
         }
         //---------------------------------------------------------below is HashMap <keyword, type>
+        List<List<String>> keytype = new ArrayList<List<String>>();
+        Collections.sort(keys);
 
         for (int i = 0; i < keys.size(); i++) {
             switch (i) {
-                case 0: {                                  //ARROW
+                case 0: {                               //ADJECTIVE
                     keymap.put(keys.get(i), nounspt);
                     break;
                 }
-                case 1: {                                  //ADVERB
+                case 1: {                              //ADVERB
                     keymap.put(keys.get(i), nounspt);
                     break;
                 }
-                case 2: {                                  //INTER
+                case 2: {                                  //ARROW
                     keymap.put(keys.get(i), nounspt);
                     break;
                 }
-                case (3): {                                //BOOK
+                case 3: {                               //BOOK
+                    keytype.add(nounspt);
+                    keytype.add(verbspt);
+                    keymap.put(keys.get(i), keytype);
+                    continue;
+                }
+                case 4: {                                //CSC220
+                    keytype.add(verbspt);
+                    keytype.add(adjspt);
+                    keymap.put(keys.get(i), keytype);
+                    continue;
+                }
+                case 5: {                                //, CSC340,
+                    keytype.add(nounspt);
+                    keytype.add(adjspt);
+                    keymap.put(keys.get(i), keytype);
+                    continue;
+                }
+                case 6: {                                  //DISTINCT
+                    keytype.add(nounspt);
+                    keytype.add(adjspt);
+                    keytype.add(advspt);
+                    keymap.put(keys.get(i), keytype);
+                    continue;
+                }
+                case 7: {                              //,INTER ,
                     keymap.put(keys.get(i), nounspt);
-                    keymap.put(keys.get(i), verbspt);
                     break;
                 }
-                case (4): {                                //DISTINCT
-                    keymap.put(keys.get(i), nounspt);
-                    keymap.put(keys.get(i), adjspt);
-                    keymap.put(keys.get(i), advspt);
-                    break;
-                }
-                case (5): {                               //, CSC340,
-                    keymap.put(keys.get(i), nounspt);
-                    keymap.put(keys.get(i), adjspt);
-                    break;
-                }
-                case (6): {                              //ADJECTIVE,
+                case 8: {                            // NOUN
                     keymap.put(keys.get(i), nounspt);
                     break;
                 }
-                case (7): {                               //CSC220
-                    keymap.put(keys.get(i), adjspt);
-                    keymap.put(keys.get(i), verbspt);
-                    break;
-                }
-                case (8): {                              //, NOUN,
-                    keymap.put(keys.get(i), nounspt);
-                    break;
-                }
-                case (9): {                            // PLACEHOLDER
-                    keymap.put(keys.get(i), nounspt);
-                    keymap.put(keys.get(i), adjspt);
-                    keymap.put(keys.get(i), advspt);
-                    keymap.put(keys.get(i), conspt);
-                    keymap.put(keys.get(i), interspt);
-                    keymap.put(keys.get(i), prospt);
-                    keymap.put(keys.get(i), prespt);
-                    keymap.put(keys.get(i), verbspt);
-                    break;
+                case 9: {                                  //PLACEHOLDER
+                    keytype.add(nounspt);
+                    keytype.add(adjspt);
+                    keytype.add(advspt);
+                    keytype.add(conspt);
+                    keytype.add(interspt);
+                    keytype.add(prospt);
+                    keytype.add(prespt);
+                    keytype.add(verbspt);
+                    keymap.put(keys.get(i), keytype);
+                    continue;
                 }
             }
+
+            keytype.clear();
         }
+
+
+
+
 
 
         //---------------------------------------------------------  below is HashMap <keyword ,speech>
         for (int i = 0; i < 10; i++) {
             switch (i) {
                 case 0: {
-                    speechmap.put(keys.get(i), speeches.subList(0, 1));
+                    speechmap.put(keys.get(i), speeches.subList(31, 32));//ADJECTIVE
                     break;
                 }
                 case 1: {
-                    speechmap.put(keys.get(i), speeches.subList(1, 9));
+                    speechmap.put(keys.get(i), speeches.subList(30, 31));//ADVERB
                     break;
                 }
                 case 2: {
-                    speechmap.put(keys.get(i), speeches.subList(9, 20));
+                    speechmap.put(keys.get(i), speeches.subList(0, 1)); //ARROW
                     break;
                 }
                 case 3: {
-                    speechmap.put(keys.get(i), speeches.subList(20, 24));
+                    speechmap.put(keys.get(i), speeches.subList(26, 30));//BOOK
                     break;
                 }
                 case 4: {
-                    speechmap.put(keys.get(i), speeches.subList(24, 26));
+                    speechmap.put(keys.get(i), speeches.subList(24, 26));//CSC220
                     break;
                 }
                 case 5: {
-                    speechmap.put(keys.get(i), speeches.subList(26, 30));
+                    speechmap.put(keys.get(i), speeches.subList(20, 24));//CSC340
                     break;
                 }
                 case 6: {
-                    speechmap.put(keys.get(i), speeches.subList(30, 31));
+                    speechmap.put(keys.get(i), speeches.subList(1, 9));//DISTINCT
                     break;
                 }
                 case 7: {
-                    speechmap.put(keys.get(i), speeches.subList(31, 32));
+                    speechmap.put(keys.get(i), speeches.subList(32, 33));//INTERJECTION
                     break;
                 }
                 case 8: {
-                    speechmap.put(keys.get(i), speeches.subList(32, 33));
+                    speechmap.put(keys.get(i), speeches.subList(33, 34));//NOUN
                     break;
                 }
                 case 9: {
-                    speechmap.put(keys.get(i), speeches.subList(33, 34));
+                    speechmap.put(keys.get(i), speeches.subList(9, 20));//PLACEHOLDER
                     break;
                 }
             }
+
         }
 
         //---------------------------------------------------------交叉比對 <keyword ,speech> and <key,type>
         //--------temp<keyword,type,speech>
-
-
+        System.out.println(keymap.get("ADVERB").size());
         HashBasedTable<String, String, String> temp = HashBasedTable.create();
-        String input_Example = "PLACEHOLDER";
-
 
         for (String key : keymap.keySet()) {
-            int index_key = 0;
-
-            while (keymap.get(key).listIterator(index_key).hasNext()){
-                int index_sp = 0;
-                while (speechmap.get(key).listIterator(index_sp).hasNext()) {
-
-
-                    //System.out.println(keymap.get(key).listIterator(index_key).next()+key);
-                    //System.out.println(key+keymap.get(key).listIterator(index_key).next());
-                    //System.out.println(speechmap.get(key).size());
-                    if(speechmap.get(key).listIterator(index_sp).next()==keymap.get(key).listIterator(index_key).next()) {
-                        System.out.println(speechmap.get(key).get(index_sp)+key);
-                        System.out.println(index_sp);
+            int index_sp = 0;
+            while (speechmap.get(key).listIterator(index_sp).hasNext()) {
+                int index_key = 0;
+                while (keymap.get(key).listIterator(index_key).nextIndex()<keymap.get(key).size()) {
+                    String speech;
+                    String keyspeech;
+                    speech = speechmap.get(key).listIterator(index_sp).next().toString();
+                    keyspeech = keymap.get(key).listIterator(index_key).next().toString();
+                    if(keymap.get(key).listIterator(index_key).next() instanceof ArrayList){
+                        keyspeech =keymap.values().stream().flatMap(Collection::stream).collect(Collectors.toList()).listIterator(index_key).next().toString();
                     }
-                    index_sp++;
+                    if ( keyspeech.equals(speech)&& verbspt.contains(speech)) {
+                        temp.put(key, "verb", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && adjspt.contains(speech)) {
+                        temp.put(key, "adjective", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && advspt.contains(speech)) {
+                        temp.put(key, "adverb", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && conspt.contains(speech)) {
+                        temp.put(key, "conjunction", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && interspt.contains(speech)) {
+                        temp.put(key, "interjection", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && prespt.contains(speech)) {
+                        temp.put(key, "prepostition", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && prospt.contains(speech)) {
+                        temp.put(key, "pronoun", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    } else if (keyspeech.equals(speech) && nounspt.contains(speech)) {
+                        temp.put(key, "noun", speechmap.get(key).listIterator(index_sp).next().toString());
+                        index_key++;
+                        continue;
+                    }
+                    index_key++;
                 }
-                System.out.println(index_key+"index_key");
-                index_key++;
+                index_sp++;
             }
-            System.out.println(key);
+
         }
 
 
+        //-------------------------------------------------------------------
 
+        for (String rowkey : temp.rowKeySet()) {
+
+            for (String column : temp.row(rowkey).keySet()) {
+                //System.out.println(temp);
+
+            }
+        }
 
 
     }
