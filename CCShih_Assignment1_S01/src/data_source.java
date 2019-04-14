@@ -1,14 +1,15 @@
-import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 enum key {
     ARROW,
     DISTINCT,
     PLACEHOLDER,
     CSC340,
-    CSC210,
+    CSC220,
     BOOK,
     ADVERB,
     ADJECTIVE,
@@ -76,291 +77,99 @@ enum speech {
     }
 };
 
-
 public class data_source {
-    public static void main(String[] args) {
-        List<String> keys = new ArrayList<>();
-        List<String> speechtypes = new ArrayList<>();
+
+    public static Multimap<String, Multimap> load() {
+
         List<String> speeches = new ArrayList<>();
-        //-----------------------------------------------
-        List<String> nounspt = new ArrayList<>();
-        List<String> adjspt = new ArrayList<>();
-        List<String> advspt = new ArrayList<>();
-        List<String> conspt = new ArrayList<>();
-        List<String> interspt = new ArrayList<>();
-        List<String> prespt = new ArrayList<>();
-        List<String> prospt = new ArrayList<>();
-        List<String> verbspt = new ArrayList<>();
+
         //-----------------------------------------------
 
-        Map<String, List> keymap = new HashMap<>();         //<List keys , List type>
-        HashMap<String, List> speechmap = new HashMap<>();       //<List key,List speech>
+        Multimap<String,String> arrow= ArrayListMultimap.create();
+        Multimap<String,String> distinct= ArrayListMultimap.create();
+        Multimap<String,String> placeholder= ArrayListMultimap.create();
+        Multimap<String,String> csc340= ArrayListMultimap.create();
+        Multimap<String,String> csc220= ArrayListMultimap.create();
+        Multimap<String,String> book= ArrayListMultimap.create();
+        Multimap<String,String> adverb= ArrayListMultimap.create();
+        Multimap<String,String> adj= ArrayListMultimap.create();
+        Multimap<String,String> inter= ArrayListMultimap.create();
+        Multimap<String,String> noun= ArrayListMultimap.create();
+
+
+        Multimap<String,Multimap> temp=ArrayListMultimap.create();
+
         //-----------------------------------------------
         for (speech spe : speech.values()) {                     //ENUM speech to List speeches
             speeches.add(spe.toString());
         }
-        for (key k : key.values()) {                             //ENUM key to List keys
-            keys.add(k.toString());
-        }
-        for (speechtype spts : speechtype.values()) {            //ENUM speechtype to List speechtypes
-            speechtypes.add(spts.toString());
-        }
 
         //-----------------------------------------------------split speech into each speechtype.
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 1 || i == 2 || i == 9 || i == 10 || i == 20 || i == 24 || i == 3 || i == 11 || i == 12 || i == 15 || i == 17 || i == 18 || i == 19 || i == 25 || i == 28 || i == 29) {
-                continue;
-            } else {
-                nounspt.add(speeches.get(i));
-            }
-        }
+        arrow.put(speechtype.valueOf("noun").toString(),speeches.get(0));
 
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 1 || i == 2 || i == 9 || i == 10 || i == 20 || i == 24) {
-                adjspt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
+        distinct.put(speechtype.valueOf("adjective").toString(),speeches.get(1));
+        distinct.put(speechtype.valueOf("adjective").toString(),speeches.get(2));
+        distinct.put(speechtype.valueOf("adverb").toString(),speeches.get(3));
+        distinct.put(speechtype.valueOf("noun").toString(),speeches.get(4));
+        distinct.put(speechtype.valueOf("noun").toString(),speeches.get(5));
+        distinct.put(speechtype.valueOf("noun").toString(),speeches.get(6));
+        distinct.put(speechtype.valueOf("noun").toString(),speeches.get(7));
+        distinct.put(speechtype.valueOf("noun").toString(),speeches.get(8));
 
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 3 || i == 11) {
-                advspt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
+        placeholder.put(speechtype.valueOf("adjective").toString(),speeches.get(9));
+        placeholder.put(speechtype.valueOf("adjective").toString(),speeches.get(10));
+        placeholder.put(speechtype.valueOf("adverb").toString(),speeches.get(11));
+        placeholder.put(speechtype.valueOf("conjunction").toString(),speeches.get(12));
+        placeholder.put(speechtype.valueOf("interjection").toString(),speeches.get(13));
+        placeholder.put(speechtype.valueOf("noun").toString(),speeches.get(14));
+        placeholder.put(speechtype.valueOf("noun").toString(),speeches.get(15));
+        placeholder.put(speechtype.valueOf("noun").toString(),speeches.get(16));
+        placeholder.put(speechtype.valueOf("preposition").toString(),speeches.get(17));
+        placeholder.put(speechtype.valueOf("pronoun").toString(),speeches.get(18));
+        placeholder.put(speechtype.valueOf("verb").toString(),speeches.get(19));
 
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 12) {
-                conspt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
+        csc340.put(speechtype.valueOf("adjective").toString(),speeches.get(20));
+        csc340.put(speechtype.valueOf("noun").toString(),speeches.get(21));
+        csc340.put(speechtype.valueOf("noun").toString(),speeches.get(22));
+        csc340.put(speechtype.valueOf("noun").toString(),speeches.get(23));
 
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 15) {
-                interspt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
+        csc220.put(speechtype.valueOf("adjective").toString(),speeches.get(24));
+        csc220.put(speechtype.valueOf("verb").toString(),speeches.get(25));
 
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 17) {
-                prespt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
+        book.put(speechtype.valueOf("noun").toString(),speeches.get(26));
+        book.put(speechtype.valueOf("noun").toString(),speeches.get(27));
+        book.put(speechtype.valueOf("verb").toString(),speeches.get(28));
+        book.put(speechtype.valueOf("verb").toString(),speeches.get(29));
 
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 18) {
-                prospt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
-
-        for (int i = 0; i < speeches.size(); i++) {
-            if (i == 19 || i == 25 || i == 28 || i == 29) {
-                verbspt.add(speeches.get(i));
-            } else {
-                continue;
-            }
-        }
-        //---------------------------------------------------------below is HashMap <keyword, type>
-        List<List<String>> keytype = new ArrayList<List<String>>();
-        Collections.sort(keys);
-
-        for (int i = 0; i < keys.size(); i++) {
-            switch (i) {
-                case 0: {                               //ADJECTIVE
-                    keymap.put(keys.get(i), nounspt);
-                    break;
-                }
-                case 1: {                              //ADVERB
-                    keymap.put(keys.get(i), nounspt);
-                    break;
-                }
-                case 2: {                                  //ARROW
-                    keymap.put(keys.get(i), nounspt);
-                    break;
-                }
-                case 3: {                               //BOOK
-                    keytype.add(nounspt);
-                    keytype.add(verbspt);
-                    keymap.put(keys.get(i), keytype);
-                    continue;
-                }
-                case 4: {                                //CSC220
-                    keytype.add(verbspt);
-                    keytype.add(adjspt);
-                    keymap.put(keys.get(i), keytype);
-                    continue;
-                }
-                case 5: {                                //, CSC340,
-                    keytype.add(nounspt);
-                    keytype.add(adjspt);
-                    keymap.put(keys.get(i), keytype);
-                    continue;
-                }
-                case 6: {                                  //DISTINCT
-                    keytype.add(nounspt);
-                    keytype.add(adjspt);
-                    keytype.add(advspt);
-                    keymap.put(keys.get(i), keytype);
-                    continue;
-                }
-                case 7: {                              //,INTER ,
-                    keymap.put(keys.get(i), nounspt);
-                    break;
-                }
-                case 8: {                            // NOUN
-                    keymap.put(keys.get(i), nounspt);
-                    break;
-                }
-                case 9: {                                  //PLACEHOLDER
-                    keytype.add(nounspt);
-                    keytype.add(adjspt);
-                    keytype.add(advspt);
-                    keytype.add(conspt);
-                    keytype.add(interspt);
-                    keytype.add(prospt);
-                    keytype.add(prespt);
-                    keytype.add(verbspt);
-                    keymap.put(keys.get(i), keytype);
-                    continue;
-                }
-            }
-
-            keytype.clear();
-        }
+        adverb.put(speechtype.valueOf("noun").toString(),speeches.get(30));
+        adj.put(speechtype.valueOf("noun").toString(),speeches.get(31));
+        inter.put(speechtype.valueOf("noun").toString(),speeches.get(32));
+        noun.put(speechtype.valueOf("noun").toString(),speeches.get(33));
 
 
+        temp.put(key.valueOf("ARROW").toString(),arrow);
+        temp.put(key.valueOf("DISTINCT").toString(),distinct);
+        temp.put(key.valueOf("PLACEHOLDER").toString(),placeholder);
+        temp.put(key.valueOf("CSC340").toString(),csc340);
+        temp.put(key.valueOf("CSC220").toString(),csc220);
+        temp.put(key.valueOf("BOOK").toString(),book);
+        temp.put(key.valueOf("ADVERB").toString(),adverb);
+        temp.put(key.valueOf("ADJECTIVE").toString(),adj);
+        temp.put(key.valueOf("INTERJECTION").toString(),inter);
+        temp.put(key.valueOf("NOUN").toString(),noun);
 
 
-
-
-        //---------------------------------------------------------  below is HashMap <keyword ,speech>
-        for (int i = 0; i < 10; i++) {
-            switch (i) {
-                case 0: {
-                    speechmap.put(keys.get(i), speeches.subList(31, 32));//ADJECTIVE
-                    break;
-                }
-                case 1: {
-                    speechmap.put(keys.get(i), speeches.subList(30, 31));//ADVERB
-                    break;
-                }
-                case 2: {
-                    speechmap.put(keys.get(i), speeches.subList(0, 1)); //ARROW
-                    break;
-                }
-                case 3: {
-                    speechmap.put(keys.get(i), speeches.subList(26, 30));//BOOK
-                    break;
-                }
-                case 4: {
-                    speechmap.put(keys.get(i), speeches.subList(24, 26));//CSC220
-                    break;
-                }
-                case 5: {
-                    speechmap.put(keys.get(i), speeches.subList(20, 24));//CSC340
-                    break;
-                }
-                case 6: {
-                    speechmap.put(keys.get(i), speeches.subList(1, 9));//DISTINCT
-                    break;
-                }
-                case 7: {
-                    speechmap.put(keys.get(i), speeches.subList(32, 33));//INTERJECTION
-                    break;
-                }
-                case 8: {
-                    speechmap.put(keys.get(i), speeches.subList(33, 34));//NOUN
-                    break;
-                }
-                case 9: {
-                    speechmap.put(keys.get(i), speeches.subList(9, 20));//PLACEHOLDER
-                    break;
-                }
-            }
-
-        }
-
-        //---------------------------------------------------------交叉比對 <keyword ,speech> and <key,type>
-        //--------temp<keyword,type,speech>
-        System.out.println(keymap.get("ADVERB").size());
-        HashBasedTable<String, String, String> temp = HashBasedTable.create();
-
-        for (String key : keymap.keySet()) {
-            int index_sp = 0;
-            while (speechmap.get(key).listIterator(index_sp).hasNext()) {
-                int index_key = 0;
-                while (keymap.get(key).listIterator(index_key).nextIndex()<keymap.get(key).size()) {
-                    String speech;
-                    String keyspeech;
-                    speech = speechmap.get(key).listIterator(index_sp).next().toString();
-                    keyspeech = keymap.get(key).listIterator(index_key).next().toString();
-                    if(keymap.get(key).listIterator(index_key).next() instanceof ArrayList){
-                        keyspeech =keymap.values().stream().flatMap(Collection::stream).collect(Collectors.toList()).listIterator(index_key).next().toString();
-                    }
-                    if ( keyspeech.equals(speech)&& verbspt.contains(speech)) {
-                        temp.put(key, "verb", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && adjspt.contains(speech)) {
-                        temp.put(key, "adjective", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && advspt.contains(speech)) {
-                        temp.put(key, "adverb", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && conspt.contains(speech)) {
-                        temp.put(key, "conjunction", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && interspt.contains(speech)) {
-                        temp.put(key, "interjection", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && prespt.contains(speech)) {
-                        temp.put(key, "prepostition", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && prospt.contains(speech)) {
-                        temp.put(key, "pronoun", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    } else if (keyspeech.equals(speech) && nounspt.contains(speech)) {
-                        temp.put(key, "noun", speechmap.get(key).listIterator(index_sp).next().toString());
-                        index_key++;
-                        continue;
-                    }
-                    index_key++;
-                }
-                index_sp++;
-            }
-
-        }
-
-
-        //-------------------------------------------------------------------
-
-        for (String rowkey : temp.rowKeySet()) {
-
-            for (String column : temp.row(rowkey).keySet()) {
-                //System.out.println(temp);
-
-            }
-        }
-
+        return temp;
 
     }
 }
+
+
+
+
+
+
+
 
 
 

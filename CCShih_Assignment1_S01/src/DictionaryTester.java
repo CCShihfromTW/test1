@@ -44,7 +44,6 @@ class DictionaryTester {
         testArray.add("Placeholder [verb] : To be updated...");
         assertEquals(testArray, d.querryDictionary("Placeholder", null, false), "Make sure the Order is correct");
         totalScore += 3;
-
     }
 
     @Test
