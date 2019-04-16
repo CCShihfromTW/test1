@@ -6,7 +6,7 @@ This will load enum objects to Strings and put them in data structures. waiting 
 # Run Instructions
 When user will enter the key words, the program will print every related lines with distinct or not.
 # run sample
-! Loading data...
+! Loading data...\n
 ! Loading completed...
 -----DICTIONARY 340 JAVA-----
 Search: arROW
